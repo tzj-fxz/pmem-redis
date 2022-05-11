@@ -3,7 +3,8 @@
  * Copyright (c) 2006-2010, Salvatore Sanfilippo <antirez at gmail dot com>
  * All rights reserved.
  *
- * hello from desktop
+ * byebye from desktop
+ * hello from pmem
  *  
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
