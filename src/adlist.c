@@ -4,16 +4,6 @@
  * All rights reserved.
  *
  * 
- * tzj test
- * tzj test2
- * tzj test3
- *
- * tzj tzj 
- * 
- * abaaba
- * 
- * 2333333
- * 2333333
  *  
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
