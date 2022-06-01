@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "libpmem.h": "c",
+        "memkind.h": "c",
+        "fmacros.h": "c"
+    }
+}
