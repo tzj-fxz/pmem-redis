@@ -1988,7 +1988,8 @@ void initServer(void) {
     server.child_info_pipe[0] = -1;
     server.child_info_pipe[1] = -1;
     server.child_info_data.magic = 0;
-    aofRewriteBufferReset();
+    //
+    aofRewriteBufferReset();//TODO: s_zmalloc, server.aof_rewrite_buf_blocks
     server.aof_buf = sdsempty();
     server.lastsave = time(NULL); /* At startup we consider the DB saved. */
     server.lastbgsave_try = 0;    /* At startup we never tried to BGSAVE. */
@@ -3703,7 +3704,7 @@ int checkForSentinelMode(int argc, char **argv) {
 void loadDataFromDisk(void) {
     long long start = ustime();
     if (server.aof_state == AOF_ON) {
-        if (loadAppendOnlyFile(server.aof_filename) == C_OK)
+        if (loadAppendOnlyFile(server.aof_filename) == C_OK)//TODO:
             serverLog(LL_NOTICE,"DB loaded from append only file: %.3f seconds",(float)(ustime()-start)/1000000);
     } else {
         rdbSaveInfo rsi = RDB_SAVE_INFO_INIT;
@@ -4015,7 +4016,7 @@ int main(int argc, char **argv) {
         linuxMemoryWarnings();
     #endif
         moduleLoadFromQueue();
-        loadDataFromDisk();
+        loadDataFromDisk();//TODO:
         if (server.cluster_enabled) {
             if (verifyClusterConfigWithData() == C_ERR) {
                 serverLog(LL_WARNING,
