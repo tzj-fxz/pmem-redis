@@ -1,5 +1,11 @@
 {
     "files.associations": {
+<<<<<<< HEAD
         "list": "c"
+=======
+        "libpmem.h": "c",
+        "memkind.h": "c",
+        "fmacros.h": "c"
+>>>>>>> lfy
     }
 }

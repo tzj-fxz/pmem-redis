@@ -449,7 +449,7 @@ sds sdsRemoveFreeSpace(sds s) {
         if (newsh == NULL) return NULL;
         s = (char*)newsh+hdrlen;
     } else {
-#if USE_NVM
+#ifdef USE_NVM
         if(is_nvm_addr(sh)) {
             newsh = s_malloc_nvm(hdrlen+len+1);
         }else {

@@ -69,6 +69,7 @@ typedef struct aofrwblock {
     char buf[AOF_RW_BUF_BLOCK_SIZE];
 } aofrwblock;
 
+//TODO:
 /* This function free the old AOF rewrite buffer if needed, and initialize
  * a fresh new one. It tests for server.aof_rewrite_buf_blocks equal to NULL
  * so can be used for the first initialization as well. */
@@ -93,6 +94,9 @@ unsigned long aofRewriteBufferSize(void) {
     }
     return size;
 }
+
+
+//TODO: May not be changed.(rewrite: parent block-> pipe (-> child sds))
 
 /* Event handler used to send data to the child process doing the AOF
  * rewrite. We send pieces of our AOF differences buffer so that the final
@@ -126,6 +130,10 @@ void aofChildWriteDiffData(aeEventLoop *el, int fd, void *privdata, int mask) {
     }
 }
 
+
+//TODO: 1. log: DRAM(flushAppendOnlyFile)->NVM(block): remove file event parts
+//2. rewrite: DRAM(flushAppendOnlyFile)->NVM(block): need file event parts
+//
 /* Append data to the AOF rewrite buffer, allocating new blocks if needed. */
 void aofRewriteBufferAppend(unsigned char *s, unsigned long len) {
     listNode *ln = listLast(server.aof_rewrite_buf_blocks);
@@ -173,6 +181,10 @@ void aofRewriteBufferAppend(unsigned char *s, unsigned long len) {
     }
 }
 
+
+//TODO: 1. log:  (serverCron)  NVM(block)->disk(AOF file): need to check nums of block
+//2. rewrite: (rewritedoneHandler) NVM(block)->disk(new AOF file): write all.
+//
 /* Write the buffer (possibly composed of multiple blocks) into the specified
  * fd. If a short write or any other error happens -1 is returned,
  * otherwise the number of bytes written is returned. */
@@ -271,6 +283,9 @@ int startAppendOnly(void) {
     return C_OK;
 }
 
+
+
+//TODO: DRAM -> NVM
 /* Write the append only file buffer on disk.
  *
  * Since we are required to write the AOF before replying to the client,
@@ -298,7 +313,7 @@ void flushAppendOnlyFile(int force) {
     if (sdslen(server.aof_buf) == 0) return;
 
     if (server.aof_fsync == AOF_FSYNC_EVERYSEC)
-        sync_in_progress = bioPendingJobsOfType(BIO_AOF_FSYNC) != 0;
+        sync_in_progress = bioPendingJobsOfType(BIO_AOF_FSYNC) != 0;//TODO:bio sync
 
     if (server.aof_fsync == AOF_FSYNC_EVERYSEC && !force) {
         /* With this append fsync policy we do background fsyncing.
@@ -1080,7 +1095,7 @@ void resolvePBA()
     }
 }
 #endif
-
+//TODO:
 /* Replay the append log file. On success C_OK is returned. On non fatal
  * error (the append only file is zero-length) C_ERR is returned. On
  * fatal error an error message is logged and the program exists. */
@@ -2051,7 +2066,7 @@ void backgroundRewriteDoneHandler(int exitcode, int bysignal) {
             if (server.aof_fsync == AOF_FSYNC_ALWAYS)
                 aof_fsync(newfd);
             else if (server.aof_fsync == AOF_FSYNC_EVERYSEC)
-                aof_background_fsync(newfd);
+                aof_background_fsync(newfd);//TODO: bio sync
             server.aof_selected_db = -1; /* Make sure SELECT is re-issued */
             aofUpdateCurrentSize();
             server.aof_rewrite_base_size = server.aof_current_size;
